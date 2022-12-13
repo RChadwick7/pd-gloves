@@ -1,3 +1,5 @@
+// playground link https://wokwi.com/projects/350945250200519250
+
 // PROGRAM SETTINGS
 unsigned long burstDurationMicrosecs = 100000;
 unsigned long pauseDurationMicrosecs = 66700;
