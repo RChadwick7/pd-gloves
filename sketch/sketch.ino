@@ -1,9 +1,9 @@
 // PROGRAM SETTINGS
 unsigned long burstDurationMicrosecs = 100000;
 unsigned long pauseDurationMicrosecs = 66700;
-int burstFrequencyPercent = 100; // maximum speed at 100
-int restFrequencyPercent = 0; // maximum speed at 100
-int pauseFrequencyPercent = 0;
+int burstFrequencyPercent = 100; // motor speed for a pair of fingers actively stimulated (value from 0 to 100)
+int restFrequencyPercent = 0; // motor speed for the fingers not being actively stimulate (value from 0 to 100)
+int pauseFrequencyPercent = 0; // motor speed for all fingers during pause (value from 0 to 100)
 
 // PROGRAM LOGIC
 enum State {
@@ -61,7 +61,7 @@ int vibrationPatterns[33][4] = {
   { 0, 0, 1, 0 },
   { 0, 0, 0, 1 },
   { 0, 1, 0, 0 },
-  // SMALL PAUSE
+  // ADDITIONAL STEP WITHOUT VIBRATION
   { 0, 0, 0, 0 }
 };
 
@@ -82,6 +82,9 @@ class Timer {
 // [indexFinger, middleFinger, ringFinger, littleFinger]
 int fingerPins[4] = { 3, 5, 6, 9 };
 int currentStep = -1;
+int burstFrequency = map(burstFrequencyPercent, 0, 100, 0, 255);
+int restFrequency = map(restFrequencyPercent, 0, 100, 0, 255);
+int pauseFrequency = map(pauseFrequencyPercent, 0, 100, 0, 255);
 Timer timer = Timer();
 
 void setup() {
@@ -139,8 +142,11 @@ void updateCurrentState () {
 
 void startVibration (int pattern[4]) {
   for (int i = 0; i < 4; i++) {
-    // TODO make use of program settings variables
-    digitalWrite(pattern[i], 255);
+    if (pattern[i]) {
+      digitalWrite(pattern[i], burstFrequency);
+    } else {
+      digitalWrite(pattern[i], restFrequency);
+    }
   }
 }
 
@@ -149,8 +155,7 @@ void stopVibration () {
 }
 
 void startPause (int pattern[4]) {
-  // TODO make use of program settings variables
-  toggleFingerPins(0);
+  toggleFingerPins(pauseFrequency);
 }
 
 void stopPause () {
