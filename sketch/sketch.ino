@@ -1,11 +1,9 @@
 // PROGRAM SETTINGS
-unsigned long vibrationBurstDurationMicrosecs = 100000;
-unsigned long pauseBetweenBurstsDurationMicrosecs = 66700;
-int burstFrequencyPercent = 100;
-int restFrequencyPercent = 0;
-int pauseBurstFrequencyPercent = 0;
-int pauseRestFrequencyPercent = 0;
-int offPeriodFrequencyPercent = 0;
+unsigned long burstDurationMicrosecs = 100000;
+unsigned long pauseDurationMicrosecs = 66700;
+int burstFrequencyPercent = 100; // maximum speed at 100
+int restFrequencyPercent = 0; // maximum speed at 100
+int pauseFrequencyPercent = 0;
 
 // PROGRAM LOGIC
 enum State {
@@ -120,14 +118,14 @@ void updateCurrentState () {
     currentState = STEP_STARTED;
   } else if (currentState = STEP_STARTED) {
     currentState = VIBRATION_STARTED;
-    timer.start(vibrationBurstDurationMicrosecs);
+    timer.start(burstDurationMicrosecs);
   } else if (currentState == VIBRATION_STARTED) {
     if (timer.isDone()) {
       currentState = VIBRATION_DONE;
     }
   } else if (currentState == VIBRATION_DONE) {
     currentState = PAUSE_STARTED;
-    timer.start(pauseBetweenBurstsDurationMicrosecs);
+    timer.start(pauseDurationMicrosecs);
   } else if (currentState == PAUSE_STARTED) {
     if (timer.isDone()) {
       currentState = PAUSE_DONE;
@@ -141,7 +139,8 @@ void updateCurrentState () {
 
 void startVibration (int pattern[4]) {
   for (int i = 0; i < 4; i++) {
-    digitalWrite(pattern[i], 255); // TODO MAP TO PERCENT (USE SETTINGS VAR)
+    // TODO make use of program settings variables
+    digitalWrite(pattern[i], 255);
   }
 }
 
