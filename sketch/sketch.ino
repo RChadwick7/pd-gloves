@@ -1,7 +1,7 @@
 // PROGRAM SETTINGS
 unsigned long burstDurationMicrosecs = 100000;
 unsigned long pauseDurationMicrosecs = 66700;
-int burstFrequencyPercent = 100; // motor speed for a pair of fingers actively stimulated (value from 0 to 100)
+int burstFrequencyPercent = 100; // motor speed for a pair of fingers being actively stimulated (value from 0 to 100)
 int restFrequencyPercent = 0; // motor speed for the fingers not being actively stimulated (value from 0 to 100)
 int pauseFrequencyPercent = 0; // motor speed for all fingers during pause (value from 0 to 100)
 
