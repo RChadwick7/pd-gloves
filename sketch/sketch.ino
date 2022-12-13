@@ -91,10 +91,10 @@ int restFrequency = map(restFrequencyPercent, 0, 100, 0, 255);
 int pauseFrequency = map(pauseFrequencyPercent, 0, 100, 0, 255);
 Timer timer = Timer();
 bool development = true;
+int debugLevel = 1;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println(currentState);
   for (int i = 0; i < 4; i++) {
     pinMode(fingerPins[i], OUTPUT);
     analogWrite(fingerPins[i], 0);
@@ -108,9 +108,11 @@ void loop() {
 
   // DEBUG
   if (development == true) {
-    if (currentState != beforeUpdateState) {
-      Serial.print("NEW STATE: ");
-      Serial.println(stateStr[currentState]);
+    if (debugLevel > 3) {
+      if (currentState != beforeUpdateState) {
+        Serial.print("NEW STATE: ");
+        Serial.println(stateStr[currentState]);
+      }
     }
   }
 
