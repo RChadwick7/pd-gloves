@@ -88,7 +88,6 @@ int pauseFrequency = map(pauseFrequencyPercent, 0, 100, 0, 255);
 Timer timer = Timer();
 
 void setup() {
-  randomSeed(analogRead(0));
   for (int i = 0; i < 4; i++) {
     pinMode(fingerPins[i], OUTPUT);
     digitalWrite(fingerPins[i], LOW);
