@@ -102,20 +102,11 @@ void setup() {
 }
 
 void loop() {
-  State beforeUpdateState = currentState;
 
-  updateCurrentState();
-
-  // DEBUG
-  if (development == true) {
-    if (debugLevel > 3) {
-      if (currentState != beforeUpdateState) {
-        Serial.print("NEW STATE: ");
-        Serial.println(stateStr[currentState]);
-      }
-    }
+  bool hasStateBeenUpdated = updateCurrentState();
+  if (hasStateBeenUpdated) {
+    printState(currentState)
   }
-
 
   if (currentState == CYCLE_STARTED) {
     currentStep = -1;
@@ -132,7 +123,8 @@ void loop() {
   }
 }
 
-void updateCurrentState () {
+bool updateCurrentState () {
+  State beforeUpdateState = currentState;
   if (currentState == OFF) {
     currentState = CYCLE_STARTED;
   } else if (currentState == CYCLE_DONE) {
@@ -162,6 +154,7 @@ void updateCurrentState () {
       currentState = CYCLE_DONE;  
     }
   }
+  return beforeUpdateState != currentState
 }
 
 void startVibration (int pattern[4]) {
@@ -189,5 +182,16 @@ void stopPause () {
 void toggleFingerPins (int value) {
   for (int i = 0; i < 4; i++) {
     analogWrite(fingerPins[i], value);
+  }
+}
+
+// DEBUG
+
+void printState (State state) {
+  if (development == true) {
+    if (debugLevel > 3) {
+        Serial.print("STATE: ");
+        Serial.println(stateStr[state]);
+    }
   }
 }
